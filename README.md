@@ -4,7 +4,7 @@ KS-VMS 是基于 Java 21、Spring Boot 和 Vue 3 的厂区访客管理系统，�
 
 访客通过手机网页提交来访申请，企业员工在工作台完成接待确认、审批和门岗登记。系统围绕一次来访记录保存申请、审批、进出厂和异常处置过程，方便行政、门卫与安全人员协作处理。
 
-[核心功能](#核心功能) · [技术栈](#技术栈) · [快速开始](#快速开始) · [部署配置](#部署配置) · [需求文档](docs/visitor-management-requirements.md) · [开发设计](docs/visitor-management-design.md)
+[核心功能](#核心功能) · [技术栈](#技术栈) · [快速开始](#快速开始) · [部署配置](#部署配置) · [项目说明与开发指南](docs/project-guide.md) · [需求文档](docs/visitor-management-requirements.md) · [开发设计](docs/visitor-management-design.md)
 
 ## 核心功能
 
@@ -198,5 +198,6 @@ VMS_TEST_URL=http://127.0.0.1:8080 mvn -f backend/pom.xml test
 
 ## 项目文档
 
+- [项目说明与开发指南](docs/project-guide.md)：当前代码架构、模块职责、数据模型、API、安全机制、本地开发和生产部署。
 - [需求文档与验收场景](docs/visitor-management-requirements.md)
 - [架构与开发设计](docs/visitor-management-design.md)
