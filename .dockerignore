@@ -1,0 +1,6 @@
+.git
+.env*
+.playwright-mcp/
+deploy/certs
+backend/target
+frontend/node_modules

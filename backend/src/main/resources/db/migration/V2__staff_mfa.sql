@@ -1,0 +1,4 @@
+ALTER TABLE staff
+    ADD COLUMN mfa_secret VARCHAR(160),
+    ADD COLUMN mfa_counter BIGINT NOT NULL DEFAULT -1,
+    ADD COLUMN auth_version BIGINT NOT NULL DEFAULT 1;

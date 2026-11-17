@@ -1,0 +1,35 @@
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: ${FORWARD_HEADERS:none}
+  servlet:
+    session:
+      timeout: 45m
+      cookie:
+        http-only: true
+        secure: ${SECURE_COOKIES:true}
+        same-site: strict
+spring:
+  datasource:
+    url: "${DB_URL:jdbc:mysql://127.0.0.1:33317/ks_vms?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true}"
+    username: ${DB_USER:vms}
+    password: ${DB_PASSWORD:}
+  jackson:
+    default-property-inclusion: non_null
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS:false}
+  swagger-ui:
+    enabled: ${API_DOCS:false}
+knife4j:
+  enable: ${API_DOCS:false}
+mybatis-plus:
+  global-config:
+    banner: false
+vms:
+  secret: ${VMS_SECRET:}
+  demo: ${VMS_DEMO:false}
+  admin-password: ${VMS_ADMIN_PASSWORD:}
+  sms-url: ${VMS_SMS_URL:}
+  sms-token: ${VMS_SMS_TOKEN:}
+  visitor-url: ${VMS_VISITOR_URL:http://localhost:5173}

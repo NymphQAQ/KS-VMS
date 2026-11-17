@@ -1,0 +1,53 @@
+name: ks-vms
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ks_vms
+      MYSQL_USER: vms
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      FORWARD_HEADERS: native
+      DB_URL: jdbc:mysql://mysql:3306/ks_vms?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD}
+      VMS_SECRET: ${VMS_SECRET:?Set VMS_SECRET}
+      VMS_ADMIN_PASSWORD: ${VMS_ADMIN_PASSWORD:?Set VMS_ADMIN_PASSWORD}
+      VMS_ADMIN_TOTP: ${VMS_ADMIN_TOTP:?Set VMS_ADMIN_TOTP}
+      VMS_VISITOR_URL: https://${VMS_VISITOR_HOST:?Set VMS_VISITOR_HOST}
+      VMS_SMS_URL: ${VMS_SMS_URL:?Set VMS_SMS_URL}
+      VMS_SMS_TOKEN: ${VMS_SMS_TOKEN:?Set VMS_SMS_TOKEN}
+  gateway:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      NGINX_ENVSUBST_FILTER: ^VMS_
+      VMS_STAFF_HOST: ${VMS_STAFF_HOST:?Set VMS_STAFF_HOST}
+      VMS_VISITOR_HOST: ${VMS_VISITOR_HOST:?Set VMS_VISITOR_HOST}
+    volumes:
+      - ./deploy/certs:/etc/nginx/tls:ro
+volumes:
+  mysql-data:
